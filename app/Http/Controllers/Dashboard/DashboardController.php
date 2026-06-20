@@ -24,24 +24,20 @@ class DashboardController extends Controller
 
     private function ownerDashboard()
     {
-        // Total penjualan hari ini semua cabang
         $todaySales = Transaction::where('status', 'completed')
             ->whereDate('transaction_date', today())
             ->sum('total_amount');
 
-        // Total transaksi bulan ini
         $monthSales = Transaction::where('status', 'completed')
             ->whereMonth('transaction_date', now()->month)
             ->sum('total_amount');
 
-        // Stok kritis (di bawah minimum) per cabang
         $criticalStocks = Stock::with(['product', 'branch'])
             ->whereColumn('quantity', '<', DB::raw('(SELECT min_stock FROM products WHERE id = stock.product_id)'))
             ->orderBy('quantity')
             ->limit(10)
             ->get();
 
-        // Penjualan per cabang bulan ini
         $salesByBranch = Transaction::where('status', 'completed')
             ->whereMonth('transaction_date', now()->month)
             ->select('branch_id', DB::raw('SUM(total_amount) as total'), DB::raw('COUNT(*) as count'))
@@ -49,7 +45,6 @@ class DashboardController extends Controller
             ->groupBy('branch_id')
             ->get();
 
-        // 5 transaksi terbaru semua cabang
         $recentTransactions = Transaction::with(['branch', 'cashier'])
             ->latest('transaction_date')
             ->limit(5)

@@ -85,4 +85,16 @@ class ReportController extends Controller
 
         return $pdf->download("laporan_{$type}_{$startDate}_sd_{$endDate}.pdf");
     }
+
+    public function exportExcel(Request $request, string $type)
+{
+$startDate = $request->start_date ?? now()->startOfMonth()->toDateString();
+$endDate = $request->end_date ?? now()->toDateString();
+$branchId = $this->getBranchId($request);
+$data = $this->service->getTransactionReport($startDate, $endDate, $branchId);
+return Excel::download(
+new TransactionExport($data),
+"laporan_transaksi_{$startDate}_sd_{$endDate}.xlsx"
+);
+}
 }
