@@ -44,11 +44,13 @@
                     <i class="bi bi-boxes me-2"></i>Stok Barang
                 </a></li>
 
+                {{--
                 @if(auth()->user()->hasRole(['warehouse','supervisor','owner','manager']))
                 <li><a href="{{ route('stock.receivings.index') }}" class="nav-link">
                     <i class="bi bi-box-arrow-in-down me-2"></i>Penerimaan Barang
                 </a></li>
                 @endif
+                --}}
 
                 @if(auth()->user()->hasRole(['supervisor','owner','manager']))
                 <li><a href="{{ route('stock.opname') }}" class="nav-link">

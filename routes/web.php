@@ -3,7 +3,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Master\{BranchController, ProductController, CategoryController, SupplierController, UserController};
 use App\Http\Controllers\Transaction\TransactionController;
-use App\Http\Controllers\Stock\{StockController, StockReceivingController};
+use App\Http\Controllers\Stock\StockController;
 use App\Http\Controllers\Report\ReportController;
 use App\Http\Controllers\ActivityLogController;
 use Illuminate\Support\Facades\Route;
@@ -67,10 +67,10 @@ Route::middleware(['auth', 'branch.access', 'activity.log'])->group(function () 
     });
 
     // ── Pegawai Gudang: penerimaan barang ────────────────────────────
-    Route::middleware('role:warehouse,supervisor,owner,manager')->group(function () {
-        Route::resource('stock/receivings', StockReceivingController::class)
-             ->names('stock.receivings');
-    });
+    // Route::middleware('role:warehouse,supervisor,owner,manager')->group(function () {
+    //     Route::resource('stock/receivings', StockReceivingController::class)
+    //          ->names('stock.receivings');
+    // });
 
     // ── Semua role: lihat stok ────────────────────────────────────────
     Route::get('stock', [StockController::class, 'index'])->name('stock.index');

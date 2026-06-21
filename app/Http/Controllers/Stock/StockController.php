@@ -28,7 +28,7 @@ class StockController extends Controller
 
         $stocks     = $query->paginate(25);
         $branches   = Branch::where('is_active', true)->get();
-        $categories = \App\Models\Category::all();
+        $categories = collect();
 
         return view('stock.index', compact('stocks', 'branches', 'categories', 'branchId'));
     }
